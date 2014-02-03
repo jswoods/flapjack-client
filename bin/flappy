@@ -1,9 +1,13 @@
 #!/usr/bin/env ruby
 
-#unless $:.include?(File.dirname(__FILE__) + '/../lib/')
-#  $: << File.dirname(__FILE__) + '/../lib'
-#end
 
-require 'flapjack/client'
+begin
+  require 'flapjack/client'
+rescue LoadError
+  unless $:.include?(File.dirname(__FILE__) + '/../lib/')
+    $: << File.dirname(__FILE__) + '/../lib'
+  end
+  require 'flapjack/client'
+end
 
 Flapjack::Client::Cli::Root.start

@@ -1,3 +1,5 @@
+require 'flapjack/client/util'
+
 module Flapjack; module Client; module Cli
   class Maintenance < Thor
 
@@ -17,7 +19,7 @@ module Flapjack; module Client; module Cli
     method_option :duration, :aliases => "-d", :default => 86000, :required => false,
       :desc => "Specify the duration."
 
-    method_option :summary, :aliases => "-s", :default => "Set by flappy", :required => false,
+    method_option :summary, :aliases => "-S", :default => "Set by flappy", :required => false,
       :desc => "Specify the summary message."
 
     desc "enable <entity>:<check> [options]", "Enable maintenance mode for an entity and check."
@@ -67,6 +69,35 @@ module Flapjack; module Client; module Cli
           end
         end
       end
+    end
+
+    method_option :start, :aliases => "-s", :default => Time.now, :required => false,
+      :desc => "Specify the start time."
+    method_option :end, :aliases => "-e", :default => Time.now+31536000, :required => false,
+      :desc => "Specify the end time."
+    method_option :scheduled, :aliases => "-S", :type => :boolean, :default => true, :required => false,
+      :desc => "Get scheduled maintenance periods"
+    method_option :unscheduled, :aliases => "-U", :type => :boolean, :default => false, :required => false,
+      :desc => "Get unscheduled maintenance periods"
+
+    desc "get <entity>:<check> [options]", "Gets maintenance mode status for an entity and check."
+    long_desc <<-LONGDESC
+      Retrieves maintenance mode status for an entity and check.
+
+      Example:
+
+      $ flappy maintenance get <entity name>:<check name>
+    LONGDESC
+
+    def get(entity_and_check)
+      maintenances = Util.get_maintenances(
+        api,
+        entity_and_check,
+        options[:start],
+        options[:end],
+        options[:scheduled],
+        options[:unscheduled])
+      puts Util.format_maintenances(entity_and_check, maintenances)
     end
 
   end

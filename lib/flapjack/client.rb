@@ -3,6 +3,6 @@ require 'flapjack/client/util'
 require 'flapjack/client/cli'
 
 module Flapjack
-	module Client
-	end
+  module Client
+  end
 end

@@ -13,6 +13,12 @@ module Flapjack; module Client; module Cli
     desc "maintenance SUBCOMMAND ...ARGS", "Enable maintenance mode for entities and checks."
     subcommand "maintenance", Flapjack::Client::Cli::Maintenance
 
+    desc "contacts SUBCOMMAND ...ARGS", "Manage contacts."
+    subcommand "contacts", Flapjack::Client::Cli::Contacts
+
+    desc "entities SUBCOMMAND ...ARGS", "Manage entities."
+    subcommand "entities", Flapjack::Client::Cli::Entities
+
   end
 
 end; end; end

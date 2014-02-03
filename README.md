@@ -5,6 +5,8 @@ Flappy is a command-line tool for [Flapjack](http://flapjack.io/) that relies he
  ```ruby
 Commands:
   flappy config SUBCOMMAND ...ARGS       # Create a ~/.flapjack.rc file that can be used by this CLI tool.
+  flappy contacts SUBCOMMAND ...ARGS     # Manage contacts.
+  flappy entities SUBCOMMAND ...ARGS     # Manage entities.
   flappy help [COMMAND]                  # Describe available commands or one specific command
   flappy maintenance SUBCOMMAND ...ARGS  # Enable maintenance mode for entities and checks.
 
@@ -19,7 +21,24 @@ Options:
 Commands:
   flappy maintenance disable <entity>:<check> [options]  # Enable maintenance mode for an entity and check.
   flappy maintenance enable <entity>:<check> [options]   # Enable maintenance mode for an entity and check.
+  flappy maintenance get <entity>:<check> [options]      # Gets maintenance mode status for an entity and check.
   flappy maintenance help [COMMAND]                      # Describe subcommands or one specific subcommand
+```
+
+### Contacts
+
+```ruby
+Commands:
+  flappy contacts create [options]  # Create contacts in Flapjack.
+  flappy contacts help [COMMAND]    # Describe subcommands or one specific subcommand
+```
+
+### Entities
+
+```ruby
+Commands:
+  flappy entities create [options]  # Create entities in Flapjack.
+  flappy entities help [COMMAND]    # Describe subcommands or one specific subcommand
 ```
 
 ### Configuration File
