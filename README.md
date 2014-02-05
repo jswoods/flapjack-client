@@ -17,6 +17,34 @@ Options:
   -c, [--config=CONFIG]  # Specify the Flapjack config file.
 ```
 
+### Checks
+
+```
+Usage:
+  flappy checks <entity>
+
+Description:
+  List the checks for a given entity.
+
+  Example:
+
+  $ flappy checks <fqdn>
+```
+
+### Status
+
+```
+Usage:
+  flappy status <entity>[:<check>[,<check>]]
+
+Description:
+  List the status of checks for a given entity.
+
+  Example:
+
+  $ flappy status <fqdn>
+```
+
 ### Maintenance Mode
 
 ```
