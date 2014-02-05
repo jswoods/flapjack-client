@@ -4,11 +4,13 @@ Flappy is a command-line tool for [Flapjack](http://flapjack.io/) that relies he
 
  ```
 Commands:
-  flappy config SUBCOMMAND ...ARGS       # Create a ~/.flapjack.rc file that can be used by this CLI tool.
-  flappy contacts SUBCOMMAND ...ARGS     # Manage contacts.
-  flappy entities SUBCOMMAND ...ARGS     # Manage entities.
-  flappy help [COMMAND]                  # Describe available commands or one specific command
-  flappy maintenance SUBCOMMAND ...ARGS  # Enable maintenance mode for entities and checks.
+  flappy checks <entity>                      # List checks for a given entity
+  flappy config SUBCOMMAND ...ARGS            # Create a ~/.flapjack.rc file that can be used by this CLI tool.
+  flappy contacts SUBCOMMAND ...ARGS          # Manage contacts.
+  flappy entities SUBCOMMAND ...ARGS          # Manage entities.
+  flappy help [COMMAND]                       # Describe available commands or one specific command
+  flappy maintenance SUBCOMMAND ...ARGS       # Enable maintenance mode for entities and checks.
+  flappy status <entity>[:<check>[,<check>]]  # List status of checks for a given entity
 
 Options:
   -u, [--uri=URI]        # Specify the Flapjack URI.
