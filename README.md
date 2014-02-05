@@ -49,7 +49,7 @@ Description:
 
 ```
 Commands:
-  flappy maintenance disable <entity>:<check> [options]  # Enable maintenance mode for an entity and check.
+  flappy maintenance disable <entity>:<check> [options]  # Disable maintenance mode for an entity and check.
   flappy maintenance enable <entity>:<check> [options]   # Enable maintenance mode for an entity and check.
   flappy maintenance get <entity>:<check> [options]      # Gets maintenance mode status for an entity and check.
   flappy maintenance help [COMMAND]                      # Describe subcommands or one specific subcommand

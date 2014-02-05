@@ -46,7 +46,7 @@ module Flapjack; module Client; module Cli
     method_option :start, :aliases => "-s", :default => Time.now, :required => false,
       :desc => "Specify the time that the maintenance should be disabled."
 
-    desc "disable <entity>:<check> [options]", "Enable maintenance mode for an entity and check."
+    desc "disable <entity>:<check> [options]", "Disable maintenance mode for an entity and check."
     long_desc <<-LONGDESC
       Disables maintenance mode for an entity and check.
 
