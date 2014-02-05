@@ -40,5 +40,26 @@ module Flapjack; module Client
       output.join("\n")
     end
 
+    def Util.get_status(api, entity_and_check)
+      entity, checks = entity_and_check.split(':')
+
+      output = []
+      output << entity
+
+      if checks.nil?
+        api.connection.status(entity).each do |check|
+          output << "#{check["name"]}  #{check["state"]}"
+        end
+      elsif checks.split(',').length == 1
+        check = api.connection.status(entity, :check => checks)
+        output << "#{check["name"]}  #{check["state"]}"
+      else
+        api.connection.bulk_status(:check => {entity => checks.split(',')}).each do |entity|
+          output << "#{entity["status"]["name"]}  #{entity["status"]["state"]}"
+        end
+      end
+      output
+    end
+
   end
 end; end
