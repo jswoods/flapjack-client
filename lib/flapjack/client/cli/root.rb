@@ -15,6 +15,7 @@ module Flapjack; module Client; module Cli
             options['uri'])
           )
       end
+
     end
 
     class_option :uri, :aliases => "-u", :required => false,
@@ -22,7 +23,6 @@ module Flapjack; module Client; module Cli
 
     class_option :config, :aliases => "-c", :required => false,
       :desc => "Specify the Flapjack config file."
-
 
     desc "checks <entity>", "List checks for a given entity"
     long_desc <<-LONGDESC

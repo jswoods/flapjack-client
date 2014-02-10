@@ -14,35 +14,37 @@ module Flapjack; module Client; module Util
 
     #TODO should accept hash rather than string here.
     def create_config(params=nil)
-      File.open(@rc_file, "w") do |f|     
+      File.open(@rc_file, "w") do |f|
         if params
           values = params.split(' ').each do |value|
-            f.write(value + "\n")   
+            f.write(value + "\n")
           end
         end
       end
     end
 
     def load_config
-       return_hash = {}
-       begin 
-        File.open(@rc_file, "r") do |f|     
-           contents = f.read()
-           k,v = contents.split('=')
-           return_hash[k] = v.strip
+      return_hash = {}
+      begin
+        File.open(@rc_file, "r") do |f|
+          f.each_line do |line|
+            next if line =~ /^\s*(#|$)/
+            k,v = line.split('=')
+            return_hash[k] = v.strip
           end
+        end
       rescue
-          if not @uri
-         raise "Couldn't load Flapjack config file " + rc_file + " " + $!.inspect
-          end
-       end
-       if @uri
-          return_hash['uri'] = @uri
-       end
-       if @logfile
-          return_hash['logfile'] = @logfile
-       end
-       return_hash
+        if not @uri
+          raise "Couldn't load Flapjack config file " + rc_file + " " + $!.inspect
+        end
+      end
+      if @uri
+        return_hash['uri'] = @uri
+      end
+      if @logfile
+        return_hash['logfile'] = @logfile
+      end
+      return_hash
     end
 
     def get_key(key)
