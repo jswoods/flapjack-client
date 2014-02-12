@@ -19,6 +19,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Flapjack::Client::VERSION
 
-  gem.add_development_dependency "bundler", "~> 1.5"
-  gem.add_development_dependency "rake"
+  gem.add_runtime_dependency "flapjack-diner"
+  gem.add_runtime_dependency "thor"
 end
