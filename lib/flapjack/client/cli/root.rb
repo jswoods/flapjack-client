@@ -33,9 +33,7 @@ module Flapjack; module Client; module Cli
       $ flappy checks <fqdn>
     LONGDESC
     def checks(entity)
-      api.connection.checks(entity).each do |check|
-        puts check
-      end
+      Util.get_checks(api, entity)
     end
 
     desc "status <entity>[:<check>[,<check>]]", "List status of checks for a given entity"
@@ -62,6 +60,9 @@ module Flapjack; module Client; module Cli
 
     desc "entities SUBCOMMAND ...ARGS", "Manage entities."
     subcommand "entities", Flapjack::Client::Cli::Entities
+
+    desc "notification_rules SUBCOMMAND ...ARGS", "Manage notification rules."
+    subcommand "notification_rules", Flapjack::Client::Cli::NotificationRules
 
   end
 

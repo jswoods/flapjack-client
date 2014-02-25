@@ -87,6 +87,15 @@ module Flapjack; module Client
       end
     end
 
+    def Util.get_checks(api, entity)
+      begin
+        api.connection.checks(entity).each do |check|
+          puts check
+        end
+      rescue NoMethodError
+      end
+    end
+
     def Util.get_maintenances(api, entity_and_check, start_time, end_time, scheduled, unscheduled)
       entity, checks = entity_and_check.split(':')
       maintenances = []
@@ -189,6 +198,110 @@ module Flapjack; module Client
         end
       end
       output
+    end
+
+    def Util.get_contact_id_by_name(api, name)
+     contact_ids = []
+     begin
+       api.connection.contacts.each do |contact|
+         first, last = name.split(" ")
+         if contact['first_name'] == first and contact['last_name'] == last
+           contact_ids << contact['id']
+         end
+       end
+     end
+     if contact_ids.count > 1
+       raise "Found more than one contact with the name #{name}."
+     elsif contact_ids.count < 1
+       raise "Could not find contact with name #{name}."
+     end
+     contact_ids.first
+    end   
+
+    def Util.get_contact_id(api, options)
+      if options[:contact_name]
+        contact_id = Util.get_contact_id_by_name(api, options[:contact_name])
+      elsif options[:contact_id]
+        contact_id = options[:contact_id]
+      else
+        raise "Must specify either contact name or contact id!"
+      end
+    end
+
+    def Util.get_notification_rules(api, contact_id)
+      begin
+        api.connection.notification_rules(contact_id)
+      rescue
+        raise "Couldn't get notification_rules " + $!.inspect
+      end
+    end
+
+    def Util.format_notification_rules(rules)
+      output = []
+      if rules
+        rules.each do |rule|
+          output << "#{rule['id']}"
+          rule.each do |k,v|
+            if not ['id', 'contact_id'].include? k
+              output << "    #{k}: #{v}"
+            end
+          end
+        end
+      end
+      output.join("\n")
+    end
+
+    def Util.delete_notification_rule(api, rule_id)
+      begin
+        api.connection.delete_notification_rule!(rule_id)
+      rescue
+        raise "Couldn't delete notification_rule #{rule_id} " + $!.inspect
+      end
+    end
+
+    def Util.get_default_notification_rules(api, rules)
+      default_rules = []
+      rules.each do |rule|
+        if rule['tags'] == [] and rule['entities'] == [] and 
+          rule['warning_media'] == ["email", "sms", "jabber", "pagerduty"] and
+          rule['critical_media'] == ["email", "sms", "jabber", "pagerduty"] and
+          rule['unknown_blackhole'] == false and rule['warning_blackhole'] == false and
+          rule['critical_blackhole'] == false
+          default_rules << rule
+        end
+      end
+      default_rules
+    end
+
+    def Util.blackhole_default_rule(api, contact_id)
+      blackhole_rule = {'contact_id' => contact_id,
+              'unknown_blackhole'    => true,
+              'warning_blackhole'    => true,
+              'critical_blackhole'   => true}
+      while true
+        rules = Util.get_notification_rules(api, contact_id)
+        default_rules = Util.get_default_notification_rules(api, rules)
+        if default_rules.count == 1
+          default_rules.each do |default_rule|
+            Util.update_notification_rule(api, default_rule['id'], blackhole_rule)  
+          end
+        elsif default_rules.count > 1
+          default_rules.each do |default_rule|
+            Util.delete_notification_rule(api, default_rules.first['id'])  
+          end
+        elsif default_rules.count == 0
+          break
+        end
+      end
+            
+    end
+
+    def Util.update_notification_rule(api, rule_id, rule)
+      begin
+        api.connection.update_notification_rule!(rule_id, rule)
+      rescue
+        raise "Couldn't update notification_rule #{rule_id} " + $!.inspect
+      end
     end
 
   end
