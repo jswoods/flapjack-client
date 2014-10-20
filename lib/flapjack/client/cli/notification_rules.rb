@@ -53,6 +53,10 @@ module Flapjack; module Client; module Cli
       end
 
       notification_rules.each do |notification_rule|
+        if Util.notification_rule_exists(api, notification_rule)
+          puts "Notification rule already exists. Skipping..."
+          next
+        end
         if api.connection.create_notification_rule!(notification_rule)
           puts "Created notification_rule."
         else

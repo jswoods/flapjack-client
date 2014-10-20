@@ -273,6 +273,32 @@ module Flapjack; module Client
       default_rules
     end
 
+    def Util.notification_rule_exists(api, rule)
+      existing_rules = Util.get_notification_rules(api, rule['contact_id'])
+      ['tags', 'entities', 'unknown_media', 'warning_media', 'critical_media'].each do |k|
+        if not rule.has_key?(k)
+          rule[k] = []
+        end
+      end
+      ['unknown_blackhole', 'warning_blackhole', 'critical_blackhole'].each do |k|
+        if not rule.has_key?(k)
+          rule[k] = false
+        end
+      end
+      if not rule.has_key?('time_restrictions')
+        rule['time_restrictions'] = nil
+      end
+      if existing_rules
+        existing_rules.each do |existing_rule|
+          existing_rule.delete('id')
+          if existing_rule == rule
+            return true
+          end
+        end
+      end
+      false
+    end
+
     def Util.blackhole_default_rule(api, contact_id)
       blackhole_rule = {'contact_id' => contact_id,
               'unknown_blackhole'    => true,

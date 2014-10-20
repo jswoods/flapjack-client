@@ -20,6 +20,7 @@ module Flapjack; module Client; module Cli
       :desc     => "Specify the start time."
     method_option :duration,
       :aliases  => "-d",
+      :type     => :numeric,
       :default  => 86000,
       :required => false,
       :desc     => "Specify the duration."
